@@ -747,46 +747,47 @@ THE SOFTWARE.
             },
 
             selectHour: function (e) {
-                var hour = parseInt($(e.target).text(), 10);
-                if (picker.date.hours() > 12) {
-                    hour += 12;
+                var hour = parseInt($(e.target).text(), 10),
+                    period = picker.date.format('A');
+                if (!picker.use24hours && period == 'PM') {
+                  hour += 12;
                 }
                 picker.date.hours(hour);
                 actions.showPicker.call(picker);
             },
 
             selectMinute: function (e) {
-                picker.date.minutes(parseInt($(e.target).text(), 10));
-                actions.showPicker.call(picker);
+              picker.date.minutes(parseInt($(e.target).text(), 10));
+              actions.showPicker.call(picker);
             },
 
             selectSecond: function (e) {
-                picker.date.seconds(parseInt($(e.target).text(), 10));
-                actions.showPicker.call(picker);
+              picker.date.seconds(parseInt($(e.target).text(), 10));
+              actions.showPicker.call(picker);
             }
         },
 
         doAction = function (e) {
-            var oldDate = pMoment(picker.date),
-                action = $(e.currentTarget).data('action'),
-                rv = actions[action].apply(picker, arguments);
-            stopEvent(e);
-            if (!picker.date) {
-                picker.date = pMoment({y: 1970});
-            }
-            set();
-            fillTime();
-            notifyChange(oldDate, e.type);
-            return rv;
+          var oldDate = pMoment(picker.date),
+          action = $(e.currentTarget).data('action'),
+          rv = actions[action].apply(picker, arguments);
+          stopEvent(e);
+          if (!picker.date) {
+            picker.date = pMoment({y: 1970});
+          }
+          set();
+          fillTime();
+          notifyChange(oldDate, e.type);
+          return rv;
         },
 
         stopEvent = function (e) {
-            e.stopPropagation();
-            e.preventDefault();
+          e.stopPropagation();
+          e.preventDefault();
         },
 
         keydown = function (e) {
-            if (e.keyCode === 27) { // allow escape to hide picker
+          if (e.keyCode === 27) { // allow escape to hide picker
                 picker.hide();
             }
         },
